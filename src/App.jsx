@@ -106,44 +106,44 @@ const App = () => {
           name: "Tacos de Asada",
           price: "$15",
           desc: "Cilantro, onions & salsa verde",
-          img: "tacoimg1.png",
+          img: "/taco1.jpg",
         },
         {
           name: "Tacos Al Pastor",
           price: "$15",
           desc: "Spicy pork, onions, cilantro, pineapple & salsa verde",
-          img: "tacoimg1.png",
+          img: "/taco2.jpg",
         },
         {
           name: "Birria Tacos",
           price: "$16",
           desc: "Short beef, Mexican melted cheese, cilantro, onions, side consome dip",
           popular: true,
-          img: "tacoimg1.png",
+          img: "/taco3.jpg",
         },
         {
           name: "Tacos de Pollo",
           price: "$15",
           desc: "Cilantro, onions & salsa verde",
-          img: "tacoimg1.png",
+          img: "/taco4.jpg",
         },
         {
           name: "Tacos de Chorizo",
           price: "$16",
           desc: "Cilantro, onions & salsa verde",
-          img: "tacoimg1.png",
+          img: "/taco1.jpg",
         },
         {
           name: "Tacos de Pescado",
           price: "$16",
           desc: "Baja style, mixed cabbage, pico de gallo & chipotle aioli",
-          img: "tacoimg1.png",
+          img: "/taco2.jpg",
         },
         {
           name: "Tacos de Camaron",
           price: "$18",
           desc: "Red cabbage, pico de gallo, chipotle aioli, slice of avocado",
-          img: "tacoimg1.png",
+          img: "/taco2.jpg",
         },
       ],
     },
@@ -195,7 +195,7 @@ const App = () => {
           name: "Classic Burritos",
           price: "$14",
           desc: "Choice of meat, rice, black beans, pico de gallo, sour cream, lettuce, Monterrey cheese. Served with chips.",
-          img: "",
+          img: "/burrito1.jpg",
         },
         {
           name: "Burrito Bowl",
@@ -242,25 +242,25 @@ const App = () => {
           price: "$10",
           desc: "Mango, Passion Fruit, Strawberry. Add flavor +$2",
           popular: true,
-          img: "",
+          img: "/drink1.jpg",
         },
         {
           name: "Mezcalitas",
           price: "$12",
           desc: "Peach, Mango, Passion Fruit, Pineapple",
-          img: "",
+          img: "/drink2.jpg",
         },
         {
           name: "Paloma",
           price: "$15",
           desc: "Tequila Silver, Grapefruit Soda, Lime Juice, Simple Syrup, Chamoy & Tajin Ring",
-          img: "",
+          img: "/drink1.jpg",
         },
         {
           name: "Aguas Frescas",
           price: "$5-$6",
           desc: "Horchata, Jamaica, Tamarind, Passion Fruit",
-          img: "",
+          img: "/drink2.jpg",
         },
       ],
     },
@@ -350,8 +350,7 @@ const App = () => {
       "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80";
 
     // Use the Vite environment variable as requested for GitHub Pages deployment
-    // (NOTE: Change the empty string below to import.meta.env.BASE_URL in your local project)
-    const baseUrl = "";
+    const baseUrl = import.meta.env.BASE_URL;
     const imageSrc = item.img ? `${baseUrl}${item.img}` : placeholderImg;
 
     return (
@@ -427,8 +426,10 @@ const App = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
           poster={`${import.meta.env.BASE_URL}video_store_front.mp4`}
         >
-          {/* Swap the source below for your local environment: src={`${import.meta.env.BASE_URL}video_store_front.mp4`} */}
-          <source src="video_store_front.mp4" type="video/mp4" />
+          <source
+            src={`${import.meta.env.BASE_URL}video_store_front.mp4`}
+            type="video/mp4"
+          />
         </video>
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-10"></div>
         <div className="container mx-auto px-4 relative z-20 text-center flex flex-col items-center pt-32 md:pt-40">
