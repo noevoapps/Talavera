@@ -27,14 +27,44 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [scrolled, setScrolled] = useState(false);
 
+  // Get the base URL from Vite (e.g., '/Talavera/' for GitHub Pages)
+  const baseUrl = import.meta.env.BASE_URL;
+
+  // Initialize page based on current URL on component mount
+  useEffect(() => {
+    const initializeRoute = () => {
+      // Check if we're being redirected from a 404 page
+      const redirectPath = sessionStorage.redirect;
+      if (redirectPath) {
+        // Clear the redirect
+        delete sessionStorage.redirect;
+        // Use the saved path
+        const route = redirectPath.replace(baseUrl, "").replace(/^\/$/, "");
+        setCurrentPage(route === "menu" ? "menu" : "home");
+        // Update the browser history to the correct URL
+        window.history.replaceState({}, "", redirectPath);
+      } else {
+        // Normal initialization from current URL
+        const pathname = window.location.pathname;
+        // Remove the base path from pathname to get the route
+        const route = pathname.replace(baseUrl, "").replace(/^\/$/, "");
+        setCurrentPage(route === "menu" ? "menu" : "home");
+      }
+    };
+
+    initializeRoute();
+  }, [baseUrl]);
+
   useEffect(() => {
     const onPopState = () => {
-      const path = window.location.pathname.replace("/", "");
-      setCurrentPage(path === "menu" ? "menu" : "home");
+      const pathname = window.location.pathname;
+      // Remove the base path from pathname to get the route
+      const route = pathname.replace(baseUrl, "").replace(/^\/$/, "");
+      setCurrentPage(route === "menu" ? "menu" : "home");
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     document.title =
@@ -53,7 +83,8 @@ const App = () => {
     setMobileMenuOpen(false);
     if (!sectionId) {
       if (page !== currentPage) {
-        window.history.pushState({}, "", page === "home" ? "/" : `/${page}`);
+        const newPath = page === "home" ? baseUrl : `${baseUrl}menu`;
+        window.history.pushState({}, "", newPath);
         setCurrentPage(page);
         window.scrollTo(0, 0);
       } else {
@@ -69,11 +100,9 @@ const App = () => {
         ? "home"
         : currentPage;
     if (targetPageForSection !== currentPage) {
-      window.history.pushState(
-        {},
-        "",
-        targetPageForSection === "home" ? "/" : `/${targetPageForSection}`,
-      );
+      const newPath =
+        targetPageForSection === "home" ? baseUrl : `${baseUrl}menu`;
+      window.history.pushState({}, "", newPath);
       setCurrentPage(targetPageForSection);
       setTimeout(() => {
         const element = document.getElementById(sectionId);
