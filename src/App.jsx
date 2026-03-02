@@ -333,7 +333,7 @@ const App = () => {
 
   // --- VISUAL COMPONENTS ---
 
-  const TalaveraBorder = ({ height = "h-4" }) => (
+  const renderTalaveraBorder = (height = "h-4") => (
     <div
       className={`w-full ${height}`}
       style={{
@@ -351,7 +351,7 @@ const App = () => {
     backgroundClip: "padding-box, border-box",
   });
 
-  const SectionTitle = ({ title, subtitle, light = false }) => (
+  const renderSectionTitle = ({ title, subtitle, light = false }) => (
     <div className="text-center mb-16 relative z-10">
       <h2
         className={`text-4xl md:text-5xl font-bold font-serif mb-4 relative inline-block ${light ? "text-white" : "text-blue-900"}`}
@@ -373,7 +373,7 @@ const App = () => {
    * UPDATED MenuItem Component
    * Features: Card layout, top image with hover zoom, top-right price pill, bottom outline tag
    */
-  const MenuItem = ({ item }) => {
+  const renderMenuItem = (item, key) => {
     // Beautiful default fallback image for items without pictures
     const placeholderImg =
       "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80";
@@ -383,9 +383,12 @@ const App = () => {
     const imageSrc = item.img ? `${baseUrl}${item.img}` : placeholderImg;
 
     return (
-      <div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 flex flex-col group overflow-hidden h-full">
+      <div
+        key={key}
+        className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 flex flex-col group overflow-hidden h-full"
+      >
         {/* Top Image Section */}
-        <div className="relative h-64 w-full overflow-hidden bg-gray-100 flex-shrink-0">
+        <div className="relative h-64 w-full overflow-hidden bg-gray-100 shrink-0">
           <img
             src={imageSrc}
             alt={item.name}
@@ -403,11 +406,11 @@ const App = () => {
         </div>
 
         {/* Content Area */}
-        <div className="p-6 flex flex-col flex-grow text-left">
+        <div className="p-6 flex flex-col grow text-left">
           <h3 className="text-2xl font-bold text-gray-900 font-serif mb-2 leading-tight">
             {item.name}
           </h3>
-          <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base mb-6 flex-grow">
+          <p className="text-gray-600 leading-relaxed font-medium text-sm md:text-base mb-6 grow">
             {item.desc}
           </p>
 
@@ -432,8 +435,9 @@ const App = () => {
     );
   };
 
-  const MobileNavLink = ({ children, onClick }) => (
+  const renderMobileNavLink = (children, onClick, key) => (
     <button
+      key={key}
       onClick={onClick}
       className="w-full text-left py-4 px-6 text-xl font-bold text-blue-900 border-b border-gray-100 hover:bg-yellow-50 active:bg-yellow-100 flex justify-between items-center group"
     >
@@ -444,7 +448,7 @@ const App = () => {
 
   // --- VIEWS ---
 
-  const HomeView = () => (
+  const renderHomeView = () => (
     <>
       <div className="relative bg-blue-900 text-white min-h-[600px] flex items-center justify-center overflow-hidden">
         <video
@@ -494,7 +498,7 @@ const App = () => {
         </div>
       </div>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       <section id="about" className="py-24 bg-yellow-50 relative">
         <div
@@ -514,7 +518,7 @@ const App = () => {
               />
             </div>
             <div className="lg:w-1/2 text-center lg:text-left">
-              <SectionTitle title="Our Story" />
+              {renderSectionTitle({ title: "Our Story" })}
               <p className="text-xl text-gray-700 mb-6 leading-relaxed font-medium">
                 Inspired by the beautiful{" "}
                 <span className="text-blue-900 font-bold">
@@ -560,27 +564,23 @@ const App = () => {
         </div>
       </section>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       <section className="py-24 relative bg-white" id="favorites">
         <div className="container mx-auto px-4 relative z-10">
-          <SectionTitle
-            title="Local Favorites"
-            subtitle="The dishes Brooklyn can't stop talking about."
-          />
+          {renderSectionTitle({
+            title: "Local Favorites",
+            subtitle: "The dishes Brooklyn can't stop talking about.",
+          })}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {fullMenu
               .find((c) => c.category === "Tacos")
               .items.filter((i) => i.popular)
-              .map((item, idx) => (
-                <MenuItem key={`fav-${idx}`} item={item} />
-              ))}
+              .map((item, idx) => renderMenuItem(item, `fav-${idx}`))}
             {fullMenu
               .find((c) => c.category === "Drinks")
               .items.filter((i) => i.popular)
-              .map((item, idx) => (
-                <MenuItem key={`fav-drink-${idx}`} item={item} />
-              ))}
+              .map((item, idx) => renderMenuItem(item, `fav-drink-${idx}`))}
           </div>
           <div className="text-center mt-16">
             <button
@@ -595,7 +595,7 @@ const App = () => {
         </div>
       </section>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       <section id="reviews" className="py-24 bg-blue-900 text-white relative">
         <div
@@ -606,11 +606,11 @@ const App = () => {
           }}
         ></div>
         <div className="container mx-auto px-4 relative z-10">
-          <SectionTitle
-            title="Amigos Love Us"
-            subtitle="Don't just take our word for it."
-            light={true}
-          />
+          {renderSectionTitle({
+            title: "Amigos Love Us",
+            subtitle: "Don't just take our word for it.",
+            light: true,
+          })}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {reviews.map((review, i) => (
               <div
@@ -634,14 +634,14 @@ const App = () => {
         </div>
       </section>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       <section id="gallery" className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <SectionTitle
-            title="La Galería"
-            subtitle="A visual feast of our kitchen."
-          />
+          {renderSectionTitle({
+            title: "La Galería",
+            subtitle: "A visual feast of our kitchen.",
+          })}
           <div className="columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4">
             {[
               "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
@@ -669,7 +669,7 @@ const App = () => {
     </>
   );
 
-  const FullMenuView = () => (
+  const renderFullMenuView = () => (
     <div className="min-h-screen bg-yellow-50 animate-fade-in">
       <div className="relative h-[300px] w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-blue-900">
@@ -688,7 +688,7 @@ const App = () => {
           </p>
         </div>
       </div>
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
       <div className="relative pt-12 pb-20">
         <div
           className="absolute inset-0 opacity-5"
@@ -741,9 +741,9 @@ const App = () => {
                       <div className="h-px bg-blue-200 flex-1"></div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {section.items.map((item, idx) => (
-                        <MenuItem key={idx} item={item} />
-                      ))}
+                      {section.items.map((item, idx) =>
+                        renderMenuItem(item, idx),
+                      )}
                     </div>
                   </div>
                 ),
@@ -769,7 +769,7 @@ const App = () => {
   return (
     <div className="font-sans text-gray-800 bg-yellow-50 min-h-screen flex flex-col overflow-x-hidden selection:bg-blue-900 selection:text-white relative">
       <div
-        className="absolute inset-0 opacity-5 pointer-events-none fixed"
+        className="fixed inset-0 opacity-5 pointer-events-none"
         style={{
           backgroundImage:
             "url('https://www.transparenttextures.com/patterns/stucco.png')",
@@ -779,7 +779,7 @@ const App = () => {
         className={`fixed w-full z-50 transition-all duration-300 ${scrolled || currentPage === "menu" ? "bg-white shadow-md py-1" : "bg-transparent py-4"}`}
       >
         <div className="absolute top-0 left-0 w-full h-3">
-          <TalaveraBorder height="h-3" />
+          {renderTalaveraBorder("h-3")}
         </div>
         <div className="container mx-auto px-4 mt-3">
           <div className="flex justify-between items-center bg-white/95 backdrop-blur-md rounded-full px-6 py-3 shadow-md border border-gray-200">
@@ -844,7 +844,7 @@ const App = () => {
       </nav>
 
       <div
-        className={`fixed inset-0 z-[60] bg-blue-900/50 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 z-60 bg-blue-900/50 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
         <div
           className={`absolute right-0 top-0 h-full w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-300 transform ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
@@ -861,18 +861,18 @@ const App = () => {
             </button>
           </div>
           <div className="flex flex-col">
-            <MobileNavLink onClick={() => navigateTo("home")}>
-              Home
-            </MobileNavLink>
-            <MobileNavLink onClick={() => navigateTo("menu")}>
-              Full Menu
-            </MobileNavLink>
-            <MobileNavLink onClick={() => navigateTo("home", "gallery")}>
-              Gallery
-            </MobileNavLink>
-            <MobileNavLink onClick={() => navigateTo("home", "reviews")}>
-              Reviews
-            </MobileNavLink>
+            {renderMobileNavLink("Home", () => navigateTo("home"), "home")}
+            {renderMobileNavLink("Full Menu", () => navigateTo("menu"), "menu")}
+            {renderMobileNavLink(
+              "Gallery",
+              () => navigateTo("home", "gallery"),
+              "gallery",
+            )}
+            {renderMobileNavLink(
+              "Reviews",
+              () => navigateTo("home", "reviews"),
+              "reviews",
+            )}
             <div className="p-6 mt-4">
               <button
                 onClick={() => navigateTo(currentPage, "order")}
@@ -885,11 +885,11 @@ const App = () => {
         </div>
       </div>
 
-      <main className="flex-grow">
-        {currentPage === "home" ? <HomeView /> : <FullMenuView />}
+      <main className="grow">
+        {currentPage === "home" ? renderHomeView() : renderFullMenuView()}
       </main>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       {/* ORDER ONLINE SECTION (Common Footer) */}
       <section
@@ -904,10 +904,10 @@ const App = () => {
           }}
         ></div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <SectionTitle
-            title="Order for Delivery"
-            subtitle="Craving tacos on your couch? We've got you covered."
-          />
+          {renderSectionTitle({
+            title: "Order for Delivery",
+            subtitle: "Craving tacos on your couch? We've got you covered.",
+          })}
           <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
             {[
               {
@@ -944,7 +944,7 @@ const App = () => {
         </div>
       </section>
 
-      <TalaveraBorder />
+      {renderTalaveraBorder()}
 
       <footer className="bg-blue-900 text-white pt-24 pb-12 relative">
         <div
