@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talavera Taqueria</title>
+    <script>
+      // GitHub Pages workaround for client-side routing
+      // Save the full path so React app can navigate to it
+      const pathname = window.location.pathname;
+      sessionStorage.redirect = pathname;
+      // Redirect to root so the app loads
+      window.location.replace("/Talavera/");
+    </script>
+  </head>
+  <body></body>
+</html>
